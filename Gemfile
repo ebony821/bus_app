@@ -45,3 +45,17 @@ group :development do
   gem 'spring'
 end
 
+
+# ***************** *********************Our gems***************************************************
+
+gem 'geocoder'
+
+#***************************************Our styles**************************************************
+
+gem 'bootstrap-sass'
+gem 'font-awesome-rails'
+
+gem 'annotate'
+gem 'stamp'
+
+
