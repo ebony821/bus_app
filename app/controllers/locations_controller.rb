@@ -10,6 +10,19 @@ class LocationsController < ApplicationController
   # GET /locations/1
   # GET /locations/1.json
   def show
+    # marta api adddress
+    bus_api_url="http://developer.itsmarta.com/BRDRestService/RestBusRealTimeService/GetAllBus"
+    @buses = get_all_buses_from_api(bus_api_url)
+    
+    @buses.select! do |bus|
+      is_nearby?(@location.latitude, @location.longitude, bus["LATITUDE"])
+    
+    
+    @get_all_buses_from_api(bus_api_url)
+    
+    #only keep buses that are close to user
+    
+    # get all buses from the api
   end
 
   # GET /locations/new
