@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :locations
   
-  root 'locations#new
+  root 'locations#new'
   
 
   # The priority is based upon order of creation: first created -> highest priority.

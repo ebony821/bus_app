@@ -1,10 +1,10 @@
-<%= form_for(@location) do |f| %>
-  <% if @location.errors.any? %>
+<%= form_with(model: location, local: true) do |form| %>
+  <% if location.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@location.errors.count, "error") %> prohibited this location from being saved:</h2>
+      <h2><%= pluralize(location.errors.count, "error") %> prohibited this location from being saved:</h2>
 
       <ul>
-      <% @location.errors.full_messages.each do |message| %>
+      <% location.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
@@ -12,15 +12,16 @@
   <% end %>
 
   <div class="field form-group">
-    <%= f.label :street_address %><br>
-    <%= f.text_field :street_address %>
+    <%= form.label 'Address or Approximate Location' %>
+    <%= form.text_field :street_address, id: :location_street_address, class: 'form-control' %>
   </div>
-  <div class="field">
-    <%= f.label :city %><br>
-    <%= f.text_field :city %>
+
+  <div class="field form-group">
+    <%= form.label :city %>
+    <%= form.collection_select :city, Location::MARTA_CITIES, :to_s, :to_s, {}, {class: 'form-control'} %>
   </div>
- 
-  <div class="actions">
-    <%= f.submit 'Find My Busses', class: 'btn btn-success' %>
+
+  <div class="actions form-group">
+    <%= form.submit 'Find My Buses', class: 'btn btn-success' %>
   </div>
 <% end %>

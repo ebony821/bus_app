@@ -8,7 +8,7 @@ module LocationsHelper
         JSON.parse(bus_data)
     end
     
-    def is_nearby?(user.lat, user_long, bus_lat, bus_long)
+    def is_nearby?(user_lat, user_long, bus_lat, bus_long)
         max_distance = 0.01
         
         difference_latitudes = user_lat -bus_lat.to_f
