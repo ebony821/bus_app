@@ -8,6 +8,9 @@
   <%= @location.full_street_address %> <small><%= link_to fa_icon('pencil', text: 'Edit'), edit_location_path(@location) %></small>
 </p>
 
+<!-- I want my map here, please. No, really, please? -->
+<div id="map-canvas"></div>
+
 <h3>The closest buses are...</h3>
 
 <% @buses.each do |bus| %>
@@ -27,3 +30,92 @@
 
 
 <%= link_to 'Edit', edit_location_path(@location) %>
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['google_maps_api_key'] %>" ></script>
+
+<script type="text/javascript">
+  function initialize() {
+    // User Location
+    var myLocation = new google.maps.LatLng(<%= @location.latitude %>, <%= @location.longitude %>)
+
+    // Map Setup
+    var mapOptions = {
+      center: myLocation,
+      zoom: 15
+    };
+
+    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+
+    // User marker
+    var personIcon = "<%= image_path 'man_icon.png' %>";
+
+    var myMarker = new google.maps.Marker({
+      position: myLocation,
+      map: map,
+      animation: google.maps.Animation.DROP,
+      title: 'My Location',
+      icon: personIcon
+    });
+
+    // User Info Window
+    var userLocationContent =
+    '<div id="content">' +
+        '<h2>Your Location</h2>' +
+        '<div id="bodyContent">' +
+          '<p>' + '<%= @location.full_street_address %>' + '</p>' +
+          '<p><em>It\'s nice over there...</em></p>' +
+        '</div>' +
+      '</div>';
+
+      var userInfoWindow = new google.maps.InfoWindow({
+        content: userLocationContent
+      });
+
+      // Show the user's info window when the marker is clicked
+      google.maps.event.addListener(myMarker, 'click', function() {
+        userInfoWindow.open(map, myMarker);
+      });
+
+
+    // Buses
+    var nearbyBuses = <%= raw @buses.to_json %>;
+
+    // Loop through and put each bus on the map
+    nearbyBuses.forEach(function (bus){
+      var busLocation = new google.maps.LatLng(bus["LATITUDE"], bus["LONGITUDE"]);
+
+      var busIcon = '<%= image_path 'robot-head.png' %>'
+
+      var busMarker = new google.maps.Marker({
+        position: busLocation,
+        map: map,
+        animation: google.maps.Animation.DROP,
+        title: bus["VEHICLE"],
+        icon: busIcon
+      });
+
+      // Bus Info Window
+      var contentString =
+      '<div id="content">' +
+        '<h2>Bus ' + bus["VEHICLE"] + ' - ' + bus["DIRECTION"] + '</h2>' +
+        '<div id="bodyContent">' +
+          '<p>Next Stop: ' + bus["TIMEPOINT"] + '</p>' +
+        '</div>' +
+      '</div>';
+
+      var infoWindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+
+      // Show the info window when the marker is clicked
+      google.maps.event.addListener(busMarker, 'click', function() {
+        infoWindow.open(map, busMarker);
+      });
+
+    });
+  }
+
+  // Put that map all up in that view!
+  google.maps.event.addDomListener(window, 'load', initialize);
+</script>

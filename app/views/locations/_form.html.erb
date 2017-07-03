@@ -1,27 +1,58 @@
-<%= form_with(model: location, local: true) do |form| %>
-  <% if location.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(location.errors.count, "error") %> prohibited this location from being saved:</h2>
+<div>
+  <div class="col-xs-12 well">
+    <%= form_for(@location) do |f| %>
+      <% if @location.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@location.errors.count, "error") %> prohibited this location from being saved:</h2>
 
-      <ul>
-      <% location.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+          <ul>
+          <% @location.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field form-group">
-    <%= form.label 'Address or Approximate Location' %>
-    <%= form.text_field :street_address, id: :location_street_address, class: 'form-control' %>
+      <div class="col-xs-12">
+        <div class="field form-group">
+          <%= f.label :street_address %><br>
+          <%= f.text_field :street_address, class: 'form-control' %>
+        </div>
+        <div class="field form-group">
+          <%= f.label :city %><br>
+          <%= f.select :city, options_for_select([
+            'Atlanta',
+            'Alpharetta',
+            'Avondale Estates',
+            'Chamblee',
+            'Clarkston',
+            'College Park',
+            'Decatur',
+            'Doraville',
+            'Dunwoody',
+            'East Point',
+            'Ellenwood',
+            'Fairburn',
+            'Forest Park',
+            'Hapeville',
+            'Jonesboro',
+            'Lake City',
+            'Lovejoy',
+            'Lithonia',
+            'Morrow',
+            'Palmetto',
+            'Riverdale',
+            'Roswell',
+            'Sandy Springs',
+            'Stone Mountain',
+            'Union City'
+          ]), {}, class: "form-control" %>
+        </div>
+      </div>
+      <div class="form-actions text-center">
+        <button class="btn btn-md btn-success">
+          <%= ' Go ' %><% f.submit %>
+        </button>
+      </div>
+    <% end %>
   </div>
-
-  <div class="field form-group">
-    <%= form.label :city %>
-    <%= form.collection_select :city, Location::MARTA_CITIES, :to_s, :to_s, {}, {class: 'form-control'} %>
-  </div>
-
-  <div class="actions form-group">
-    <%= form.submit 'Find My Buses', class: 'btn btn-success' %>
-  </div>
-<% end %>
+</div>
