@@ -45,11 +45,6 @@ group :development do
   gem 'spring'
 end
 
-group :production do 
-  gem 'pg'
-  gem 'rails_12factor'
-end
-
 
 # ***************** *********************Our gems***************************************************
 
@@ -66,3 +61,7 @@ gem 'stamp'
 # it's a secret***********
 gem 'figaro'
 
+group :production do
+  gem 'pg'
+  gem 'rails_12factor'
+end
